@@ -1,0 +1,12 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "extensions_CustomScript_commandToExecute": {
+            "value": "echo hello"
+        },
+        "extensions_CustomScript_commandToExecute_1": {
+            "value": "echo hello"
+        }
+    }
+}
