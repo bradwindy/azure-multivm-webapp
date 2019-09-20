@@ -779,7 +779,7 @@
             ],
             "properties": {
                 "hardwareProfile": {
-                    "vmSize": "Standard_B1ls"
+                    "vmSize": "Standard_B1ms"
                 },
                 "storageProfile": {
                     "imageReference": {
@@ -837,7 +837,7 @@
             ],
             "properties": {
                 "hardwareProfile": {
-                    "vmSize": "Standard_B1ls"
+                    "vmSize": "Standard_B1ms"
                 },
                 "storageProfile": {
                     "imageReference": {
