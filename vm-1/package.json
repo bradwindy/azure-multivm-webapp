@@ -8,10 +8,10 @@
     "cors": "^2.8.5",
     "jquery": "^3.4.1",
     "popper.js": "^1.15.0",
-    "react": "^16.8.6",
+    "react": "^16.9.0",
     "react-confirm-alert": "^2.4.1",
-    "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1"
+    "react-dom": "^16.9.0",
+    "react-scripts": "3.1.2"
   },
   "scripts": {
     "start": "node server.js",
@@ -36,6 +36,6 @@
     ]
   },
   "devDependencies": {
-    "typescript": "^3.4.5"
+    "typescript": "^3.6.3"
   }
 }
