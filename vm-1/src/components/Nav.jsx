@@ -21,7 +21,7 @@ export default class Nav extends React.Component {
       alert("Tasks cannot be blank");
     } else {
       console.log(note);
-      axios.post(`http://10.0.1.4:3000/note`, { note }).then(res => {
+      axios.post(`http://13.70.6.93:3000/note`, { note }).then(res => {
         console.log(res);
         console.log(res.data);
       });
@@ -33,7 +33,7 @@ export default class Nav extends React.Component {
   deleteFunction = event => {
     event.preventDefault();
 
-    axios.delete(`http://10.0.1.4:3000/deleteallnotes`, {}).then(res => {
+    axios.delete(`http://13.70.6.93:3000/deleteallnotes`, {}).then(res => {
       console.log(res);
       console.log(res.data);
     });
