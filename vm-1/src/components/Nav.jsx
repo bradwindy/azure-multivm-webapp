@@ -24,9 +24,8 @@ export default class Nav extends React.Component {
       axios.post(`http://13.70.6.93:3000/note`, { note }).then(res => {
         console.log(res);
         console.log(res.data);
+        window.location.reload();
       });
-
-      window.location.reload();
     }
   };
 
@@ -36,9 +35,8 @@ export default class Nav extends React.Component {
     axios.delete(`http://13.70.6.93:3000/deleteallnotes`, {}).then(res => {
       console.log(res);
       console.log(res.data);
+      window.location.reload();
     });
-
-    window.location.reload();
   };
 
   render() {

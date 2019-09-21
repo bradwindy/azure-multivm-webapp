@@ -18,9 +18,8 @@ export default class NoteList extends React.Component {
     axios.delete(`http://13.70.6.93:3000/delete/${id}`).then(res => {
       console.log(res);
       console.log(res.data);
+      window.location.reload();
     });
-
-    window.location.reload();
   };
 
   render() {
