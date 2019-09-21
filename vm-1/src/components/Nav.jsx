@@ -3,7 +3,9 @@ import axios from "axios";
 
 export default class Nav extends React.Component {
   state = {
-    note: ""
+    note: "",
+    noteSendingState: false,
+    noteDeleteAllState: false
   };
 
   handleChange = event => {
@@ -21,9 +23,11 @@ export default class Nav extends React.Component {
       alert("Tasks cannot be blank");
     } else {
       console.log(note);
+      this.setState({ noteSendingState: true });
       axios.post(`http://13.70.6.93:3000/note`, { note }).then(res => {
         console.log(res);
         console.log(res.data);
+        this.setState({ noteSendingState: false });
         window.location.reload();
       });
     }
@@ -31,10 +35,11 @@ export default class Nav extends React.Component {
 
   deleteFunction = event => {
     event.preventDefault();
-
+    this.setState({ noteDeleteAllState: true });
     axios.delete(`http://13.70.6.93:3000/deleteallnotes`, {}).then(res => {
       console.log(res);
       console.log(res.data);
+      this.setState({ noteDeleteAllState: false });
       window.location.reload();
     });
   };
@@ -55,9 +60,20 @@ export default class Nav extends React.Component {
           </div>
           <div className="row">
             <button className="btn btn-outline-success" type="submit">
-              Add
+              {this.state.noteSendingState ? (
+                <>
+                  &nbsp;
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  &nbsp;
+                </>
+              ) : (
+                "Add"
+              )}
             </button>
-
             <button
               className="btn btn-outline-danger ml-2"
               onClick={event => {
@@ -69,7 +85,19 @@ export default class Nav extends React.Component {
                   this.deleteFunction(event);
               }}
             >
-              Delete All
+              {this.state.noteDeleteAllState ? (
+                <>
+                  &nbsp; &nbsp; &nbsp;
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  &nbsp; &nbsp; &nbsp;
+                </>
+              ) : (
+                "Delete All"
+              )}
             </button>
           </div>
         </div>
