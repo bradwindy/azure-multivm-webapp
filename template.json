@@ -595,7 +595,7 @@
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.0",
                 "settings": {
-                    "fileUris": ["[parameters('provisioningScript1')]"]
+                    "fileUris": ["[parameters('provisioningScript2')]"]
                 },
                 "protectedSettings": {
                     "commandToExecute": "[parameters('extensions_CustomScript_commandToExecute_1')]"
