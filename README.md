@@ -6,7 +6,7 @@
 
 This is a project connecting two virtual machines and a cloud database service together to form a collaborative to-do list web app.
 
-The system consists of two Azure virtual machines. One VM is hosting a to-do list web app written in React. There is another hosting a node server with an express.js API to load, save, and delete tasks based on request from the web app. This project also uses the Microsoft Azure Cosmos DB to store the tasks to a database.
+The system consists of two Azure virtual machines. One VM is hosting a to-do list web app written in React. There is another hosting a node server with an express.js API to load, save, and delete tasks based on requests from the web app. This project also uses the Microsoft Azure Cosmos DB to store the tasks to a database.
 
 **See GitHub issues and commit history for project work history.**
 
@@ -33,6 +33,7 @@ The system consists of two Azure virtual machines. One VM is hosting a to-do lis
 - Then enter into a terminal window `git clone https://github.com/bradwindy/azure-multivm-webapp.git`
 - Then enter `cd azure-multivm-webapp`
 - The project is viewable and editable from this directory.
+- **IMPORTANT: CHANGE THE ADMIN PASSWORD ENTRY IN PARAMETERS.JSON OR YOUR VIRTUAL MACHINES WILL BE INSECURE**
 - Next enter `az login` and follow the steps to login to the Azure CLI.
 - Next, enter `az account show --out json` , and save the value in the ID field somewhere. This is your individual subscription ID and will be needed for setup of the virtual machines.
 - Then, enter `./deploy.sh` and follow the steps that appear in the terminal window. The subscription ID is the ID value we obtained earlier. A good resource group and deployment name could be something like `multivmwebapp`. The location should be `eastasia`, look into the template file to change all the locations if you want to be in a different location. This process will take a while to complete. Around 6 - 7 minutes.
@@ -84,19 +85,15 @@ The setup for development and testing is as follows (for macOS):
 
 ### Server
 
-- First the server must be run. In a terminal window at the root directory of the project, enter `cd vm-2` which takes you to the server directory. Next enter `npm run start` to start the server.
+- The server code must be modified with an actual mongo DB connection string. You can use one hosted in the cloud or on your local device.
+- Once the string is replaced, in a terminal window at the root directory of the project, enter `cd vm-2` which takes you to the server directory. Next enter `npm run start` to start the server.
 - If any changes are made to the server code, you will need to stop the server process using Ctrl+C and restart it again using `npm run start` before any changes are visible.
 
 ### Web App
 
-- To run a version of the web app for development. First you must change all URLs in the code that mention the IP address and port 192.168.55.11:3000 to instead be localhost:3000
-- Then open another terminal window at the root directory of the project, enter `cd vm-1` which takes you to the web app directory. Next enter `npm run start` to start the web app. Press 'y' when prompted about ports.
-- The app is now viewable at: <http://localhost:3001> Changes made to any of the code in the web app directory will be automatically loaded on save.
-
-### PDF printing program
-
-- In a terminal window at the root directory of the project, enter `cd vm-3` which takes you to the PDF program directory. Next enter `npm run start` to run the PDF printing program.
-- If any changes are made to the list of tasks, this program can just be run again to overwrite the file.
+- To run a version of the web app for development. First you must change all URLs in the code that mention the IP address and port 13.70.6.93:3000 to instead be localhost:3000
+- Then open another terminal window at the root directory of the project, enter `cd vm-1` which takes you to the web app directory. Next enter `npm run build && npm run start` to start the web app.
+- The app is now viewable at: <http://localhost> Changes made to any of the code in the web app directory will be automatically loaded on save.
 
 ## Built With
 
@@ -105,8 +102,6 @@ The setup for development and testing is as follows (for macOS):
 - [React](https://github.com/facebook/react) - Frontend JavaScript library.
 - [Node](https://github.com/nodejs/node) - Backend JS runtime.
 - [Bootstrap](https://github.com/twbs/bootstrap) - Frontend framework for website elements and styling.
-- [Vagrant](https://github.com/hashicorp/vagrant) - Setup and provisioning of virtual machines.
-- [Ubuntu Xenial](https://kernel.ubuntu.com/git/) - Underlying VM.
 
 ## Author
 
