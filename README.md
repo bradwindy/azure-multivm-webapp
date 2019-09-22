@@ -2,6 +2,8 @@
 
 **FULL REPORT IS THE PDF IN LATEX FILES FOLDER**
 
+Live hosted version of this project is available at: <http://13.70.0.241/>
+
 ## About
 
 This is a project connecting two virtual machines and a cloud database service together to form a collaborative to-do list web app.
