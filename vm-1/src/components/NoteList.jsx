@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import $ from "jquery";
 
 export default class NoteList extends React.Component {
   state = {
