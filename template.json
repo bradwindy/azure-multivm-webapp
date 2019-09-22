@@ -10,6 +10,14 @@
             "defaultValue": null,
             "type": "SecureString"
         },
+        "adminPassword": {
+            "defaultValue": null,
+            "type": "SecureString"
+        },
+        "provisioningScript": {
+            "defaultValue": null,
+            "type": "String"
+        },
         "virtualMachines_vm_1_name": {
             "defaultValue": "vm-1",
             "type": "String"
@@ -562,7 +570,7 @@
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.0",
                 "settings": {
-                    "fileUris": []
+                    "fileUris": ["[parameters('provisioningScript')]"]
                 },
                 "protectedSettings": {
                     "commandToExecute": "[parameters('extensions_CustomScript_commandToExecute')]"
@@ -803,7 +811,7 @@
                 "osProfile": {
                     "computerName": "[parameters('virtualMachines_vm_1_name')]",
                     "adminUsername": "vmadmin",
-                    "adminPassword": "VMpassword000",
+                    "adminPassword": "[parameters('adminPassword')]",
                     "linuxConfiguration": {
                         "disablePasswordAuthentication": false,
                         "provisionVMAgent": true
@@ -861,7 +869,7 @@
                 "osProfile": {
                     "computerName": "[parameters('virtualMachines_vm_2_name')]",
                     "adminUsername": "vmadmin",
-                    "adminPassword": "VMpassword000",
+                    "adminPassword": "[parameters('adminPassword')]",
                     "linuxConfiguration": {
                         "disablePasswordAuthentication": false,
                         "provisionVMAgent": true
