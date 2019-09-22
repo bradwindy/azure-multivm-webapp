@@ -19,4 +19,4 @@ cd vm-1
 
 npm install
 
-npm run build
+npm install forever -g
