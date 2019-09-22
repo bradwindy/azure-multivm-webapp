@@ -19,4 +19,4 @@ cd vm-2
 
 npm install
 
-forever start app2.js 
+node app2.js &
