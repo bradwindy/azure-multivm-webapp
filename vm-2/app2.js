@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 
 let db;
 
-MongoClient.connect(
+/* MongoClient.connect(
   "mongodb://multivm:lzOPtJaUfJvFx2z325iM9MJmM4OkBuiqbgR3eM27ZEP8jKCcSTtfN9bvqPFPRAzV5WIG8OiSUtOMaL3TQKhRJA%3D%3D@multivm.documents.azure.com:10255/?ssl=true&replicaSet=globaldb",
   function(err, client) {
     error = err;
@@ -38,7 +38,7 @@ MongoClient.connect(
         }
       });
   }
-);
+); */
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
