@@ -4,8 +4,8 @@ import axios from "axios";
 export default class Nav extends React.Component {
   state = {
     note: "",
-    noteSendingState: false,
-    noteDeleteAllState: false
+    taskSendingState: false,
+    taskDeleteAllState: false
   };
 
   handleChange = event => {
@@ -23,11 +23,11 @@ export default class Nav extends React.Component {
       alert("Tasks cannot be blank");
     } else {
       console.log(note);
-      this.setState({ noteSendingState: true });
+      this.setState({ taskSendingState: true });
       axios.post(`http://13.70.6.93:3000/note`, { note }).then(res => {
         console.log(res);
         console.log(res.data);
-        this.setState({ noteSendingState: false });
+        this.setState({ taskSendingState: false });
         window.location.reload();
       });
     }
@@ -35,11 +35,11 @@ export default class Nav extends React.Component {
 
   deleteFunction = event => {
     event.preventDefault();
-    this.setState({ noteDeleteAllState: true });
+    this.setState({ taskDeleteAllState: true });
     axios.delete(`http://13.70.6.93:3000/deleteallnotes`, {}).then(res => {
       console.log(res);
       console.log(res.data);
-      this.setState({ noteDeleteAllState: false });
+      this.setState({ taskDeleteAllState: false });
       window.location.reload();
     });
   };
@@ -60,7 +60,7 @@ export default class Nav extends React.Component {
           </div>
           <div className="row">
             <button className="btn btn-outline-success" type="submit">
-              {this.state.noteSendingState ? (
+              {this.state.taskSendingState ? (
                 <>
                   &nbsp;
                   <span
@@ -85,7 +85,7 @@ export default class Nav extends React.Component {
                   this.deleteFunction(event);
               }}
             >
-              {this.state.noteDeleteAllState ? (
+              {this.state.taskDeleteAllState ? (
                 <>
                   &nbsp; &nbsp; &nbsp;
                   <span

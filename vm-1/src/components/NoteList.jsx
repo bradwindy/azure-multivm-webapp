@@ -1,18 +1,19 @@
 import React from "react";
 import axios from "axios";
+import $ from "jquery";
 
 export default class NoteList extends React.Component {
   state = {
     reply: [],
-    noteLoadingState: false
+    taskLoadingState: false
   };
 
   componentDidMount() {
-    this.setState({ noteLoadingState: true });
+    this.setState({ taskLoadingState: true });
     axios.get(`http://13.70.6.93:3000/notes`).then(res => {
       const reply = res.data;
       console.log(reply);
-      this.setState({ noteLoadingState: false });
+      this.setState({ taskLoadingState: false });
       this.setState({ reply });
     });
   }
@@ -34,7 +35,7 @@ export default class NoteList extends React.Component {
       return (
         <ul className="list-group pt-3">
           <li className="list-group-item text-muted">
-            {this.state.noteLoadingState ? (
+            {this.state.taskLoadingState ? (
               <span
                 class="spinner-border spinner-border-sm"
                 role="status"
@@ -49,7 +50,7 @@ export default class NoteList extends React.Component {
     } else {
       return (
         <>
-          {this.state.noteLoadingState ? (
+          {this.state.taskLoadingState ? (
             <ul className="list-group pt-3 pb-5">
               <li className="list-group-item font-weight-bold">
                 <span
