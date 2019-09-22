@@ -3,10 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "extensions_CustomScript_commandToExecute": {
-      "value": "echo hello"
+      "value": "./vm1script.sh"
     },
     "extensions_CustomScript_commandToExecute_1": {
-      "value": "echo hello"
+      "value": "./vm2script.sh"
     },
     "adminPassword": {
       "value": "VMpassword000"
