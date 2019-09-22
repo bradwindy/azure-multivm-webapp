@@ -25,7 +25,7 @@ let db;
             [
               { note: "These are some example tasks" },
               { note: "Add new tasks above" },
-              { note: "Delete these using the X on the left" },
+              { note: "Delete these using the X on the right" },
               { note: "Or use the delete all button above!" }
             ],
             (err, result) => {
