@@ -11,8 +11,11 @@
     "adminPassword": {
       "value": "VMpassword000"
     },
-    "provisioningScript": {
-      "value": ""
+    "provisioningScript1": {
+      "value": "https://raw.githubusercontent.com/bradwindy/azure-multivm-webapp/master/vm1script.sh"
+    },
+    "provisioningScript2": {
+      "value": "https://raw.githubusercontent.com/bradwindy/azure-multivm-webapp/master/vm2script.sh"
     }
   }
 }

@@ -14,7 +14,11 @@
             "defaultValue": null,
             "type": "SecureString"
         },
-        "provisioningScript": {
+        "provisioningScript1": {
+            "defaultValue": null,
+            "type": "String"
+        },
+        "provisioningScript2": {
             "defaultValue": null,
             "type": "String"
         },
@@ -570,7 +574,7 @@
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.0",
                 "settings": {
-                    "fileUris": ["[parameters('provisioningScript')]"]
+                    "fileUris": ["[parameters('provisioningScript1')]"]
                 },
                 "protectedSettings": {
                     "commandToExecute": "[parameters('extensions_CustomScript_commandToExecute')]"
@@ -591,7 +595,7 @@
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.0",
                 "settings": {
-                    "fileUris": []
+                    "fileUris": ["[parameters('provisioningScript1')]"]
                 },
                 "protectedSettings": {
                     "commandToExecute": "[parameters('extensions_CustomScript_commandToExecute_1')]"
