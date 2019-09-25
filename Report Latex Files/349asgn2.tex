@@ -1,0 +1,284 @@
+\documentclass[12pt]{extarticle}
+
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{hyperref}
+
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstset{language=bash,
+  basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{red},
+  keywordstyle=\color{black}
+}
+
+\setlength{\parskip}{12pt}
+
+\title{COSC349 Assignment 2}
+\author{Bradley Windybank - 4353100}
+\date{August 2019}
+
+\begin{document}
+
+
+\maketitle
+
+\section{About}
+\subsection{Application Explanation}
+This application is a collaborative task list application. It uses two cloud hosted virtual machines that communicate with each other over the internet, along with a cloud database API for storage of tasks. One VM hosts a web app that the user can interact with to view, save, and delete tasks. Another VM takes requests and retrieves, deletes or saves tasks depending on the contents of the request.
+
+\subsection{VM interaction}
+The React web app VM communicates to the Express server VM through RESTful API requests. It receives information back in JSON format. The server VM sends requests over the internet to the MongoDB API hosted in the cloud and receives information back which is in turn passed to the web app to update the user. I chose this database service as it is compatible with my existing mongoDB code within my server application, and is able to be created through the Azure portal, streamlining development. The separation of the database out into a cloud service also simplifies development as there no longer needs to be any code in the provisioning script for the creation of a mongoDB database and the second VM is now solely for the server API code.
+
+\section{VM Deployment}
+
+\subsection{Semi-Automated Deployment Steps}
+\subsubsection*{Prerequisites}
+\begin{itemize}
+\item Azure CLI is needed. To install on macOS, install xcode extensions if not already installed. This is needed for the installation of homebrew.
+	\begin{itemize}
+     	\item \lstinline|xcode-select --install|
+	\end{itemize}
+
+\item Install homebrew if not already installed so we can use it to install the Azure CLI.
+	\begin{itemize}
+     	\item \begin{lstlisting}
+/usr/bin/ruby -e "$(curl -fsSL 
+https://raw.githubusercontent.com/
+Homebrew/install/master/install)"
+     	\end{lstlisting}
+	\end{itemize}
+
+\item Now we install the Azure CLI using homebrew.
+	\begin{itemize}
+     	\item \lstinline|brew update && brew install azure-cli|
+	\end{itemize}
+	
+\item An Azure account also needs to be created.
+
+\end{itemize}
+
+\subsubsection*{Process}
+This process is for macOS and should be very similar on Linux. The steps are also available in the read-me in the GitHub repo.
+\begin{itemize}
+\item
+  After installing prerequisites, open up a terminal window.
+\item
+  Change directory to the folder you want this project to be enclosed
+  within.
+\item
+  Then clone the repo at:
+\item \url{https://github.com/bradwindy/azure-multivm-webapp}
+\item
+  Then enter \texttt{cd\ azure-multivm-webapp}
+\item
+  The project is viewable and editable from this directory.
+\item
+  \textbf{IMPORTANT: Change the admin password entry in parameters.json}
+\item
+  Next enter \texttt{az\ login} and follow the steps to login to the
+  Azure CLI.
+\item
+  Next, enter \texttt{az\ account\ show\ -\/-out\ json} , and save the
+  value in the ID field somewhere. This is your individual subscription
+  ID and will be needed for setup of the virtual machines.
+\item
+  Then, enter \texttt{./deploy.sh} and follow the steps that appear in
+  the terminal window. The subscription ID is the ID value we obtained
+  earlier. A good resource group and deployment name could be something
+  like \texttt{multivmwebapp}. The location should be \texttt{eastasia},
+  look into the template file to change all the locations if you want to
+  be in a different location. This process will take a while to
+  complete. Around 6 - 7 minutes.
+\item
+  The deployment process is not fully automated at this stage. So next
+  go to the URL \url{https://portal.azure.com/} and log in.
+\item
+  Here open \textbf{Resource Groups} from the sidebar and then select
+  the resource group just created before during the deploy process.
+\item
+  Click the \textbf{Add} button up the top of the new view within the
+  browser window to add a new resource to this group.
+\item
+  Search \texttt{Azure\ Cosmos\ DB} in the serch bar, and click the
+  create button from its resource page.
+\item
+  In the form that appears, add any account name to the account name
+  field, and select \textbf{Azure Cosmos DB for MongoDB API} as the API
+  option.
+\item
+  Choose \textbf{East Asia} as the location as done before (or whichever
+  location the values in template.json were changed to).
+\item
+  Then click \textbf{Review + Create} and then \textbf{Create} as they
+  appear. Deployment of the database may take some time.
+\item
+  Next, click \textbf{Go to Resource} and then select the
+  \textbf{Connection String} option on the inner sidebar.
+\item
+  Copy the primary connection string to your keyboard, and save the
+  value somewhere for safekeeping on your computer for the time being.
+\item
+  \textbf{IMPORTANT:} Replace the \texttt{==} in the connection string
+  with \texttt{\%3D\%3D} or you will get errors due to the way mongo
+  parses URLs.
+\item
+  Next, open \textbf{Resource Groups} from the sidebar again, and again
+  choose the correct group.
+\item
+  Click the \textbf{vm-1-ip} entry in the list that appears to open its
+  resource page and select the \textbf{Configuration} option on the
+  inner sidebar.
+\item
+  Change the IP assignment from Dynamic to \textbf{Static}, then click
+  save. Once the change has saved, copy the IP address and save it in
+  the same place as the connection string that was saved before.
+\item
+  \textbf{Do the same above} for \emph{vm-2-ip}, making sure to save the
+  IP again.
+\item
+  Open up a terminal window again, and ssh into the API server VM using
+  the command
+  \texttt{ssh\ vmadmin@<VM-2\ IP\ YOU\ COPIED>}
+\item
+  Log-in using the password you chose above.
+\item
+  Enter \texttt{sudo\ su} and then
+  
+  \texttt{cd\ /var/lib/waagent/custom-script/download/0/vm-2}
+\item
+  Then enter \texttt{nano\ app2.js} to edit the server file.
+\item
+  Uncomment the mongo connection function by removing the
+  \texttt{/*\ */} parts from either end of the statement.
+\item
+  Remove the current connection string.
+  \item (The part that starts with \texttt{mongodb://})
+\item
+  Replace it with the modified connection string from earlier.
+\item
+  \texttt{Ctrl-o} then \texttt{enter} then \texttt{Ctrl-x} saves the
+  changes.
+\item
+  Then run \texttt{forever\ start\ app2.js} and then \texttt{exit} and
+  \texttt{exit} to leave su and then ssh.
+\item
+  Next, ssh into the web app VM using the command:
+\item \texttt{ssh\ vmadmin@<VM-1\ IP\ YOU\ COPIED>}
+\item
+  Enter \texttt{sudo\ su} in terminal and then enter (all one line):
+  \begin{lstlisting}
+cd /var/lib/waagent/custom-script/download/0/
+vm-1/src/components
+     	\end{lstlisting}
+\item
+  Enter \texttt{nano\ Nav.jsx} into terminal, and replace the IP
+  \texttt{13.70.6.93} with the IP of the \textbf{VM-2 VM} that was saved
+  earlier. There are two entries of it in this file.
+\item
+  \texttt{Ctrl-o} then \texttt{enter} then \texttt{Ctrl-x} saves the
+  changes again.
+\item
+  \textbf{Do the same for NoteList.jsx}, it has two addresses to be
+  changed as well.
+\item
+  Once done, run \texttt{npm\ run\ build} to build the files to be
+  served. Then serve the web page using
+  \texttt{forever\ start\ server.js} and then \texttt{exit} and
+  \texttt{exit} to leave su and then ssh.
+\item
+  \textbf{All done.} The web app is now available by entering the IP of
+  VM-1 in your browser.
+\item
+  Check out my example available at \url{http://13.70.0.241/}
+\end{itemize}
+
+\subsection{Setup Automation Workflow}
+\subsubsection*{Deployment Script}
+Setup automation is done using a shell script and some template files generated on the Azure Portal. This process will be explained more down below. How this script works, is that it takes some information regarding setup parameters from user in both the command line and from a pre-written file, it then runs an Azure CLI deployment command with this information and the template.json file included. This results in a resource group being created on the Azure platform containing two virtual machines with necessary networking components, such as a virtual network, and appropriate security groups. Each VM then has a provisioning script run within to set up the necessary files and dependencies that are needed for its operation. This process is as follows.
+\subsubsection*{Provisioning Scripts}
+\subsubsection*{Server VM}
+\begin{itemize}
+\item The repo is first cloned into the VM. The vm-2 folder is extracted and the rest of the files from the repo are deleted.
+\item Node is installed.
+\item \lstinline|npm install| is run to install the necessary dependencies.
+\item Then the command line tool \lstinline|forever| is installed globally so that the server file can be run correctly later.
+\item The rest of the provisioning steps are run by the user.
+\end{itemize}
+
+\subsubsection*{Web App VM}
+\begin{itemize}
+\item The repo is first cloned into the VM. The vm-1 folder is extracted and the rest of the files from the repo are deleted.
+\item Node is installed.
+\item \lstinline|npm install| is run to install the necessary dependencies.
+\item Then the command line tool \lstinline|forever| is installed globally so that the web app can be served correctly later.
+\item The rest of the provisioning steps are run by the user.
+\end{itemize}
+
+\subsection{How Deployment was Automated}
+The deploy.sh script and the template.json file were both created using tools available on the Azure Cloud Portal. I created a resource group containing all the necessary virtual machines along with associated networking settings. The resource group is then able to exported to a template from the portal. This results in a zip containing these files being downloaded. The template and deploy script were then modified slightly to accept a password parameter and provisioning scripts. Once this was done, I set up the virtual machines from the terminal using these files and documented the process above to fit my exact project. 
+
+I wasn't able to fully automate the setup as I have limited time, and in this time, I wasn't able to find a way to correctly pass in the IP's of the VM's and the Mongo connection string. This is the reason why this process has to be done by the user. It results in simpler project deployment instructions, compared to it being fully done through the portal, but not as simple as I would have liked. I would prefer the user to just run one script and be able to enter all necessary information directly into that script so the portal never has to be accessed during the setup process.
+
+This has been is my reason for choosing Azure over AWS as a cloud provider. AWS probably has similar tools for this exact process, but the documentation for these was a lot more complicated to navigate and so I wasn't able to find out easily how to complete this process on AWS instead of Azure.
+
+
+\section{Use of the Application}
+\subsection{How to Reach the Web App}
+My deployed web app is available at: \url{http://13.70.0.241/}
+
+\subsection{How to Use the Web App}
+The application is used through a web interface. The user can type a task into the text box, then save it using the button below the box. The user can then delete all tasks using the red button marked 'Delete All'. Or they can delete tasks one by one using the 'x' icons on the right of each task.
+
+\subsection{Evidence of Use}
+Here is a link to a YouTube video that shows me using my application. You can see it is through the link given above and I am able to add a remove tasks as expected. 
+
+\url{https://youtu.be/ccWDpbCgu4c}
+
+
+\section{Further Expansion}
+\subsection{Use of Git/GitHub}
+The use of Git/GitHub in this project gives several advantages. One is that it allows for easy version control. The commit history can be looked back on and changes can be reverted or branched if needed. It also allows for easy modification by others and collaboration with others. Many people can work on the same repo with ease and the codebase can also be forked into new projects. 
+
+\subsection{Setup for Devlopment and Testing}
+The setup for development and testing is as follows (for macOS):
+\begin{itemize}
+\subsubsection*{Initial Setup}
+\item Install mongoDB by following instructions here: \url{https://treehouse.github.io/installation-guides/mac/mongo-mac.html}
+\item Install VSCode (or editor of choice): \url{https://code.visualstudio.com/}
+\item Install Node LTS version: \url{https://nodejs.org/en/download/}
+\item Open up a terminal window.
+\item Change directory to the folder you want this project to be enclosed within.
+\item Then clone the repository \lstinline|git clone <URL>| at: \url{https://github.com/bradwindy/vagrant-multi-VM.git}
+\item This folder can now be opened in your editor of choice.
+
+\subsubsection*{Server}
+\item The server code must be modified with an actual mongo DB connection string. You can use one hosted in the cloud or on your local device.
+\item Once the string is replaced, in a terminal window at the root directory of the project, enter \lstinline|cd vm-2| which takes you to the server directory. Next enter \lstinline|npm run start| to start the server.
+\item If any changes are made to the server code, you will need to stop the server process using Ctrl+C and restart it again using  \lstinline|npm run start| before any changes are visible.
+
+\subsubsection*{Web App}
+\item To run a version of the web app for development. First you must change all URLs in the code that mention the IP address and port 13.70.6.93:3000 to instead be localhost:3000
+\item Then open another terminal window at the root directory of the project, enter \lstinline|cd vm-1| which takes you to the web app directory. Next enter \lstinline|npm run build && npm run start| to start the web app.
+\item The app is now viewable at: \url{http://localhost}
+
+\end{itemize}
+
+All these instructions are also available in the README file in the repo.
+
+\section{Development Timeline}
+Development of the system started with researching into how automatic deployment could work for this project. I looked at the documentation regarding automation for both Azure and AWS. I found that Azure had clearer documentation for automated template deployment, and so I went down that route. I then created the template files using the tools available on the Azure Cloud Portal. Next I added some of the files I would need for this assignment from work I had done for the previous assignment. The system I am implementing here is same in function as my previous assignment, but interacts with the virtual machines in a slightly different way, and is deployed to the cloud. 
+
+I then modified the existing server/web app networking code and deployment networking code to work with the cloud environment. I also, as a learning experience more than anything, adding loading wheels to the buttons in the UI when requests to the server are happening. As with the cloud environment, requests now take a while, and I want to inform that user that something is indeed happening in the background. 
+
+The provisioning scripts were then created and incorporated into the deployment code. They were then tested in the deployment process and updated until they were doing what I wanted them to do. The server and web app code along with the network security groups were then modified again to work together and successfully send requests across the network. 
+
+
+
+\end{document}
