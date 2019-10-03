@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 
 let db;
 
+// DO NOT REMOVE, THIS GETS UNCOMMENTED IN SETUP PROCESS
+
 /* MongoClient.connect(
   "mongodb://multivm:lzOPtJaUfJvFx2z325iM9MJmM4OkBuiqbgR3eM27ZEP8jKCcSTtfN9bvqPFPRAzV5WIG8OiSUtOMaL3TQKhRJA%3D%3D@multivm.documents.azure.com:10255/?ssl=true&replicaSet=globaldb",
   function(err, client) {

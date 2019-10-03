@@ -69,6 +69,8 @@ The system consists of two Azure virtual machines. One VM is hosting a to-do lis
 - **ALL DONE!** The web app is now available by entering the IP of VM-1 in your browser.
 - Check out my example available at <http://13.70.0.241/>
 
+Apologies for not having a completely automated setup. I tried to automate the steps above, but ran into a lot of trouble, and the process was harder than I initially expected. This process is at least fully documented and should be replicable. The process may look long and complex, but my intention was just to be as verbose as possible to make the steps veyr clear, and so each step is quicker than it looks.
+
 ## Development
 
 The setup for development and testing is as follows (for macOS):
