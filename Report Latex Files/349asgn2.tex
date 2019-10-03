@@ -199,6 +199,8 @@ vm-1/src/components
   Check out my example available at \url{http://13.70.0.241/}
 \end{itemize}
 
+Apologies for not having a completely automated setup. I tried to automate the steps above, but ran into a lot of trouble, and the process was harder than I initially expected. This process is at least fully documented and should be replicable. The process may look long and complex, but my intention was just to be as verbose as possible to make the steps very clear, and so each step is quicker than it looks.
+
 \subsection{Setup Automation Workflow}
 \subsubsection*{Deployment Script}
 Setup automation is done using a shell script and some template files generated on the Azure Portal. This process will be explained more down below. How this script works, is that it takes some information regarding setup parameters from user in both the command line and from a pre-written file, it then runs an Azure CLI deployment command with this information and the template.json file included. This results in a resource group being created on the Azure platform containing two virtual machines with necessary networking components, such as a virtual network, and appropriate security groups. Each VM then has a provisioning script run within to set up the necessary files and dependencies that are needed for its operation. This process is as follows.
@@ -244,7 +246,7 @@ Here is a link to a YouTube video that shows me using my application. You can se
 
 \section{Further Expansion}
 \subsection{Use of Git/GitHub}
-The use of Git/GitHub in this project gives several advantages. One is that it allows for easy version control. The commit history can be looked back on and changes can be reverted or branched if needed. It also allows for easy modification by others and collaboration with others. Many people can work on the same repo with ease and the codebase can also be forked into new projects. 
+The use of Git/GitHub in this project gives several advantages. One is that it allows for easy version control. The commit history can be looked back on and changes can be reverted or branched if needed. It also allows for easy modification by others and collaboration with others. Many people can work on the same repo with ease and the code-base can also be forked into new projects. 
 
 \subsection{Setup for Devlopment and Testing}
 The setup for development and testing is as follows (for macOS):
