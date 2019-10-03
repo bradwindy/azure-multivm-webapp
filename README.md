@@ -1,7 +1,5 @@
 # Cloud Hosted Multi VM Web Application
 
-**FULL REPORT IS THE PDF IN LATEX FILES FOLDER**
-
 Live hosted version of this project is available at: <http://13.70.0.241/>
 
 ## About
