@@ -65,7 +65,6 @@ The system consists of two Azure virtual machines. One VM is hosting a to-do lis
 - **Do the same for NoteList.jsx**, it has two addresses to be changed as well.
 - Once done, run `npm run build` to build the files to be served. Then serve the web page using `forever start server.js` and then `exit` and `exit` to leave su and then ssh.
 - **ALL DONE!** The web app is now available by entering the IP of VM-1 in your browser.
-- Check out my example available at <http://13.70.0.241/>
 
 Apologies for not having a completely automated setup. I tried to automate the steps above, but ran into a lot of trouble, and the process was harder than I initially expected. This process is at least fully documented and should be replicable. The process may look long and complex, but my intention was just to be as verbose as possible to make the steps very clear, and so each step is quicker than it looks.
 
